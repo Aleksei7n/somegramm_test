@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  width: 972px;
+  max-width: 100%;
+  border: 1px solid red;
+
+  & img {
+    object-fit: cover;
+  }
+}
+
+.filtersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  width: 480px;
+  height: 504px;
+  padding: 24px 54px;
+
+  border: 1px solid green;
+}

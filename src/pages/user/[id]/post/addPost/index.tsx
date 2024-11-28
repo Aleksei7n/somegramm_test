@@ -14,6 +14,7 @@ import PublicationContent from './publicationContent'
 import CloseContent from './closeContent'
 import { Loader } from '@/components/loader'
 import { MAX_POST_IMGE_SIZE_20MB } from '@/shared/const/sizes'
+import { FiltersContent } from './filtersContent'
 
 type Props = {
   setIsActiveCreate: (isActiveCreate: boolean) => void
@@ -34,6 +35,8 @@ const DialogAddUserPost = ({ setIsActiveCreate }: Props) => {
   const [publicPost, setPublicPost] = useState(false)
   const [description, setDescription] = useState('')
   const [images, setImages] = useState<string[]>([])
+
+  const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false)
 
   const MAX_CHARS = 500
 
@@ -143,17 +146,29 @@ const DialogAddUserPost = ({ setIsActiveCreate }: Props) => {
             <AddPhotoContent errorUpload={errorUpload} handleUpload={handleUpload} />
           </DialogContent>
         ) : (
+          !isFiltersModalOpen && (
+            <DialogContent
+              customTitle={'Cropping'}
+              customBtn={'Next'}
+              onCustomBtnClickGo={() => setIsFiltersModalOpen(true)}
+              onCustomBtnClickBack={handleCustomBtnClickBack}
+            >
+              <CroppingContent
+                handleUpload={handleUpload}
+                images={images}
+                removeImage={removeImage}
+              />
+            </DialogContent>
+          )
+        )}
+        {isFiltersModalOpen && (
           <DialogContent
-            customTitle={'Cropping'}
+            customTitle={'Filters'}
             customBtn={'Next'}
             onCustomBtnClickGo={() => setPublicPost(true)}
-            onCustomBtnClickBack={handleCustomBtnClickBack}
+            onCustomBtnClickBack={() => setIsFiltersModalOpen(false)}
           >
-            <CroppingContent
-              handleUpload={handleUpload}
-              images={images}
-              removeImage={removeImage}
-            />
+            <FiltersContent images={images} />
           </DialogContent>
         )}
         {publicPost && profileInfo && (

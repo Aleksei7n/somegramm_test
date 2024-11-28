@@ -2,6 +2,8 @@ import Slider from 'react-slick'
 import s from './photoSlider.module.scss'
 import { ArrowIosBack, ArrowIosForward } from '@honor-ui/inctagram-ui-kit'
 import Image from 'next/image'
+import { current } from '@reduxjs/toolkit'
+import { Dispatch, SetStateAction } from 'react'
 
 type Props = {
   images: string[]
@@ -9,9 +11,17 @@ type Props = {
   dotClass?: string
   imgClass?: string
   clickCallback?: () => void | undefined
+  setCurrentSlide?: Dispatch<SetStateAction<number>>
 }
 
-const PhotoSlider: React.FC<Props> = ({ images, className, dotClass, imgClass, clickCallback }) => {
+const PhotoSlider: React.FC<Props> = ({
+  images,
+  className,
+  dotClass,
+  imgClass,
+  clickCallback,
+  setCurrentSlide,
+}) => {
   const Arrow = ({ direction, onClick }: { direction: 'prev' | 'next'; onClick: () => void }) => {
     return (
       images.length > 1 && (
@@ -47,6 +57,7 @@ const PhotoSlider: React.FC<Props> = ({ images, className, dotClass, imgClass, c
           {...settings}
           className={className ? className : ''}
           dotsClass={dotClass ? dotClass : 'slick-dots'}
+          afterChange={current => setCurrentSlide!(current)}
         >
           {images?.map(imgSrc => (
             <div key={imgSrc} className={s.slide}>
